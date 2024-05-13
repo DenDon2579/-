@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  const base64token = req.headers.authorization?.split(' ')[1];
-  if (base64token) {
-    const [login, password] = Buffer.from(base64token, 'base64')
+  if (!req.headers.authorization) return;
+  const [authType, credentials] = req.headers.authorization?.split(' ');
+  if (authType === 'Basic' && credentials) {
+    const [login, password] = Buffer.from(credentials, 'base64')
       .toString()
       .split(':');
     if (login === 'admin' && password === 'qwerty') {

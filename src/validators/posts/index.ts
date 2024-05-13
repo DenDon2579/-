@@ -6,21 +6,21 @@ const postTitleValidator = body('title')
   .isString()
   .withMessage('This field is required')
   .trim()
-  .isLength({ max: 30 })
+  .isLength({ min: 1, max: 30 })
   .withMessage('Invalid length');
 
 const postShortDescriptionValidator = body('shortDescription')
   .isString()
   .withMessage('This field is required')
   .trim()
-  .isLength({ max: 100 })
+  .isLength({ min: 1, max: 100 })
   .withMessage('Invalid length');
 
 const postContentValidator = body('content')
   .isString()
   .withMessage('This field is required')
   .trim()
-  .isLength({ max: 1000 })
+  .isLength({ min: 1, max: 1000 })
   .withMessage('Invalid length');
 
 const postBlogIdValidator = body('blogId')
