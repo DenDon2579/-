@@ -4,7 +4,10 @@ import BlogRepository from './BlogRepository';
 
 export default {
   getAll() {
-    return DB.posts;
+    return DB.posts.map((post) => ({
+      ...post,
+      blogName: BlogRepository.findById(post.blogId),
+    }));
   },
   findById(id: string): IPostViewModel | null {
     const findResult = DB.posts.find((post) => post.id === id);
