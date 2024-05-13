@@ -9,6 +9,6 @@ export const app = Express();
 
 app.use(bodyParser.json()).use(cors());
 
-app.use('/blog', blogsRouter);
-app.use('/post', postsRouter);
+app.use('/blogs', blogsRouter);
+app.use('/posts', postsRouter);
 app.use('/testing', testingRouter);

@@ -5,4 +5,5 @@ import { DB } from '../../data/db/db';
 export default (req: Request, res: Response) => {
   DB.blogs = [];
   DB.posts = [];
+  res.sendStatus(HTTP_CODES.NO_CONTENT);
 };
