@@ -19,8 +19,6 @@ export default {
     return null;
   },
   create(postData: IPostInputModel) {
-    console.log(postData.blogId);
-    if (!BlogRepository.findById(postData.blogId)) return null;
     const id = Date.now().toString();
     DB.posts.push({ id, ...postData });
     return this.findById(id);

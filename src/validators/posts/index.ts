@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import returnErrors from '../returnErrors';
+import BlogRepository from '../../data/repos/BlogRepository';
 
 const postTitleValidator = body('title')
   .isString()
@@ -24,7 +25,12 @@ const postContentValidator = body('content')
 
 const postBlogIdValidator = body('blogId')
   .isString()
-  .withMessage('This field is required');
+  .withMessage('This field is required')
+  .custom(async (id) => {
+    if (!BlogRepository.findById(id)) {
+      throw Error('Blog not found');
+    }
+  });
 
 export const postInputValidator = [
   postTitleValidator,
