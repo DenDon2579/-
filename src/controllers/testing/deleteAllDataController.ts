@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
+import { DB } from '../../data/db/db';
 
 export default (req: Request, res: Response) => {
-  // DB.clearDatabase();
-  // res.sendStatus(HTTP_CODES.NO_CONTENT);
+  DB.blogs = [];
+  DB.posts = [];
 };
