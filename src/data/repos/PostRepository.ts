@@ -6,7 +6,7 @@ export default {
   getAll() {
     return DB.posts.map((post) => ({
       ...post,
-      blogName: BlogRepository.findById(post.blogId),
+      blogName: BlogRepository.findById(post.blogId)?.name,
     }));
   },
   findById(id: string): IPostViewModel | null {
