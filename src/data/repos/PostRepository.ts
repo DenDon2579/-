@@ -3,16 +3,16 @@ import { DB } from '../db/db';
 import BlogRepository from './BlogRepository';
 
 export default {
-  getAll() {
-    return DB.posts.map((post) => ({
+  async getAll() {
+    return DB.posts.map(async (post) => ({
       ...post,
-      blogName: BlogRepository.findById(post.blogId)?.name,
+      blogName: (await BlogRepository.findById(post.blogId))?.name,
     }));
   },
-  findById(id: string): IPostViewModel | null {
+  async findById(id: string): Promise<IPostViewModel | null> {
     const findResult = DB.posts.find((post) => post.id === id);
     if (findResult) {
-      const blogName = BlogRepository.findById(findResult.blogId)?.name;
+      const blogName = (await BlogRepository.findById(findResult.blogId))?.name;
       if (blogName)
         return {
           ...findResult,
@@ -21,12 +21,17 @@ export default {
     }
     return null;
   },
-  create(postData: IPostInputModel) {
+  async create(postData: IPostInputModel) {
     const id = Date.now().toString();
-    DB.posts.push({ id, ...postData });
+    DB.posts.push({
+      id,
+      ...postData,
+      createdAt: new Date().toISOString(),
+      isMembership: false,
+    });
     return this.findById(id);
   },
-  updateById(id: string, postData: IPostInputModel) {
+  async updateById(id: string, postData: IPostInputModel) {
     const findResult = DB.posts.find((post) => post.id === id);
     if (findResult) {
       findResult.blogId = postData.blogId;
@@ -37,8 +42,8 @@ export default {
     }
     return null;
   },
-  deleteById(id: string) {
-    const findResult = this.findById(id);
+  async deleteById(id: string) {
+    const findResult = await this.findById(id);
     if (findResult) {
       DB.posts = DB.posts.filter((post) => post.id !== id);
       return true;

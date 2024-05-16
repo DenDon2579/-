@@ -6,8 +6,12 @@ export interface IBlogInputModel {
 
 export interface IBlogViewModel extends IBlogInputModel {
   id: string;
+  createdAt: string;
+  isMembership: boolean;
 }
 
 export interface IBlog extends IBlogInputModel {
   id: string;
+  createdAt: string;
+  isMembership: boolean;
 }

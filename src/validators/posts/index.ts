@@ -27,7 +27,7 @@ const postBlogIdValidator = body('blogId')
   .isString()
   .withMessage('This field is required')
   .custom(async (id) => {
-    if (!BlogRepository.findById(id)) {
+    if (!(await BlogRepository.findById(id))) {
       throw Error('Blog not found');
     }
   });

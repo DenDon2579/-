@@ -8,6 +8,8 @@ export interface IPostInputModel {
 export interface IPostViewModel extends IPostInputModel {
   id: string;
   blogName: string;
+  createdAt: string;
+  isMembership: boolean;
 }
 
 export interface IPost {
@@ -16,4 +18,6 @@ export interface IPost {
   shortDescription: string; // maxLength: 100
   content: string; // maxLength: 1000
   blogId: string;
+  createdAt: string;
+  isMembership: boolean;
 }
