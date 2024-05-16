@@ -4,10 +4,12 @@ import BlogRepository from './BlogRepository';
 
 export default {
   async getAll() {
-    return DB.posts.map(async (post) => ({
-      ...post,
-      blogName: (await BlogRepository.findById(post.blogId))?.name,
-    }));
+    return await Promise.all(
+      DB.posts.map(async (post) => ({
+        ...post,
+        blogName: (await BlogRepository.findById(post.blogId))?.name,
+      }))
+    );
   },
   async findById(id: string): Promise<IPostViewModel | null> {
     const findResult = DB.posts.find((post) => post.id === id);
@@ -27,7 +29,6 @@ export default {
       id,
       ...postData,
       createdAt: new Date().toISOString(),
-      isMembership: false,
     });
     return this.findById(id);
   },
