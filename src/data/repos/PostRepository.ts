@@ -4,7 +4,7 @@ import BlogRepository from './BlogRepository';
 
 export default {
   async getAll() {
-    return await Promise.all(
+    const findResult = await Promise.all(
       (
         await mongoDB.collection<IPost>('posts').find({}).toArray()
       ).map(async (post) => ({
@@ -12,16 +12,21 @@ export default {
         blogName: (await BlogRepository.findById(post.blogId))?.name,
       }))
     );
-    //  const posts = await DB.collection('posts').find({}).toArray();
+
+    return findResult.map((post) => {
+      const { _id: _, ...postWithoutMongoId } = post;
+      return postWithoutMongoId;
+    });
   },
   async findById(id: string): Promise<IPostViewModel | null> {
     const findResult = await mongoDB.collection<IPost>('posts').findOne({ id });
 
     if (findResult) {
-      const blogName = (await BlogRepository.findById(findResult.blogId))?.name;
+      const { _id: _, ...result } = findResult;
+      const blogName = (await BlogRepository.findById(result.blogId))?.name;
       if (blogName)
         return {
-          ...findResult,
+          ...result,
           blogName,
         };
     }

@@ -6,7 +6,13 @@ export default {
     return mongoDB.collection<IBlog>('blogs').find({}).toArray();
   },
   async findById(id: string) {
-    return await mongoDB.collection<IBlog>('blogs').findOne({ id });
+    const findResult = await mongoDB.collection<IBlog>('blogs').findOne({ id });
+
+    if (findResult) {
+      const { _id: _, ...result } = findResult;
+      return result;
+    }
+    return null;
   },
   async create(blogData: IBlogInputModel) {
     const id = Date.now().toString();
