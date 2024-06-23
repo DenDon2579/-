@@ -3,6 +3,7 @@ dotenv.config();
 
 export const SETTINGS = {
   PORT: process.env.PORT || 3000,
+  MONGO: process.env.MONGO || '',
 };
 
 export const HTTP_CODES = {

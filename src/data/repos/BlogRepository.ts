@@ -1,29 +1,25 @@
-import { IBlogInputModel } from '../../../types/blogs';
-import { DB } from '../db/db';
+import { IBlog, IBlogInputModel, IBlogViewModel } from '../../../types/blogs';
+import { DB, mongoDB } from '../db/db';
 
 export default {
   async getAll() {
-    return DB.blogs;
+    return mongoDB.collection<IBlog>('blogs').find({}).toArray();
   },
   async findById(id: string) {
-    const findResult = DB.blogs.find((blog) => blog.id === id);
-    if (findResult) {
-      return findResult;
-    }
-    return null;
+    return await mongoDB.collection<IBlog>('blogs').findOne({ id });
   },
   async create(blogData: IBlogInputModel) {
     const id = Date.now().toString();
-    DB.blogs.push({
-      id,
+    await mongoDB.collection<IBlog>('blogs').insertOne({
       ...blogData,
+      id,
       createdAt: new Date().toISOString(),
       isMembership: false,
     });
     return this.findById(id);
   },
   async updateById(id: string, blogData: IBlogInputModel) {
-    const findResult = DB.blogs.find((blog) => blog.id === id);
+    const findResult = await this.findById(id);
     if (findResult) {
       findResult.description = blogData.description;
       findResult.name = blogData.name;
@@ -33,9 +29,8 @@ export default {
     return null;
   },
   async deleteById(id: string) {
-    const findResult = await this.findById(id);
-    if (findResult) {
-      DB.blogs = DB.blogs.filter((blog) => blog.id !== id);
+    const deleteResult = await mongoDB.collection('blogs').deleteOne({ id });
+    if (deleteResult.deletedCount) {
       return true;
     }
     return null;
