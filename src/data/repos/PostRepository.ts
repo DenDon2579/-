@@ -34,7 +34,7 @@ export default {
   },
   async create(postData: IPostInputModel) {
     const id = Date.now().toString();
-    mongoDB.collection('posts').insertOne({
+    await mongoDB.collection('posts').insertOne({
       id,
       ...postData,
       createdAt: new Date().toISOString(),
