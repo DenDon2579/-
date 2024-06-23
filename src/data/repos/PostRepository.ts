@@ -41,15 +41,17 @@ export default {
     });
     return this.findById(id);
   },
-  async updateById(id: string, postData: IPostInputModel) {
-    const findResult = await this.findById(id);
-    if (findResult) {
-      findResult.blogId = postData.blogId;
-      findResult.title = postData.title;
-      findResult.shortDescription = postData.shortDescription;
-      findResult.content = postData.content;
-      return true;
-    }
+  async updateById(
+    id: string,
+    { blogId, title, shortDescription, content }: IPostInputModel
+  ) {
+    const updateResult = await mongoDB
+      .collection<IPost>('posts')
+      .updateOne(
+        { id },
+        { $set: { blogId, title, shortDescription, content } }
+      );
+    if (updateResult.modifiedCount) return true;
     return null;
   },
   async deleteById(id: string) {

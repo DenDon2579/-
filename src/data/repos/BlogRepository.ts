@@ -24,12 +24,14 @@ export default {
     });
     return this.findById(id);
   },
-  async updateById(id: string, blogData: IBlogInputModel) {
-    const findResult = await this.findById(id);
-    if (findResult) {
-      findResult.description = blogData.description;
-      findResult.name = blogData.name;
-      findResult.websiteUrl = blogData.websiteUrl;
+  async updateById(
+    id: string,
+    { name, description, websiteUrl }: IBlogInputModel
+  ) {
+    const updateResult = await mongoDB
+      .collection<IBlog>('blogs')
+      .updateOne({ id }, { $set: { name, description, websiteUrl } });
+    if (updateResult.modifiedCount) {
       return true;
     }
     return null;
