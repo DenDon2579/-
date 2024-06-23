@@ -3,7 +3,12 @@ import { DB, mongoDB } from '../db/db';
 
 export default {
   async getAll() {
-    return mongoDB.collection<IBlog>('blogs').find({}).toArray();
+    return (await mongoDB.collection<IBlog>('blogs').find({}).toArray()).map(
+      (blog) => {
+        const { _id: _, ...blogWithoutMongoId } = blog;
+        return blogWithoutMongoId;
+      }
+    );
   },
   async findById(id: string) {
     const findResult = await mongoDB.collection<IBlog>('blogs').findOne({ id });
