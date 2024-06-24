@@ -1,5 +1,9 @@
-import { IBlog, IBlogInputModel, IBlogViewModel } from '../../../types/blogs';
-import { DB, mongoDB } from '../db/db';
+import {
+  IBlog,
+  IBlogInputModel,
+  IBlogRepositoryInputModel,
+} from '../../../types/blogs';
+import { mongoDB } from '../db/db';
 
 export default {
   async getAll() {
@@ -19,23 +23,19 @@ export default {
     }
     return null;
   },
-  async create(blogData: IBlogInputModel) {
+  async create(blogData: IBlogRepositoryInputModel) {
     const id = Date.now().toString();
     await mongoDB.collection<IBlog>('blogs').insertOne({
       ...blogData,
       id,
       createdAt: new Date().toISOString(),
-      isMembership: false,
     });
     return this.findById(id);
   },
-  async updateById(
-    id: string,
-    { name, description, websiteUrl }: IBlogInputModel
-  ) {
+  async updateById(id: string, blogData: IBlogInputModel) {
     const updateResult = await mongoDB
       .collection<IBlog>('blogs')
-      .updateOne({ id }, { $set: { name, description, websiteUrl } });
+      .updateOne({ id }, { $set: { ...blogData } });
     if (updateResult.modifiedCount) {
       return true;
     }

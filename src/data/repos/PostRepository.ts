@@ -4,14 +4,10 @@ import BlogRepository from './BlogRepository';
 
 export default {
   async getAll() {
-    const findResult = await Promise.all(
-      (
-        await mongoDB.collection<IPost>('posts').find({}).toArray()
-      ).map(async (post) => ({
-        ...post,
-        blogName: (await BlogRepository.findById(post.blogId))?.name,
-      }))
-    );
+    const findResult = await mongoDB
+      .collection<IPost>('posts')
+      .find({})
+      .toArray();
 
     return findResult.map((post) => {
       const { _id: _, ...postWithoutMongoId } = post;
@@ -41,16 +37,10 @@ export default {
     });
     return this.findById(id);
   },
-  async updateById(
-    id: string,
-    { blogId, title, shortDescription, content }: IPostInputModel
-  ) {
+  async updateById(id: string, postData: IPostInputModel) {
     const updateResult = await mongoDB
       .collection<IPost>('posts')
-      .updateOne(
-        { id },
-        { $set: { blogId, title, shortDescription, content } }
-      );
+      .updateOne({ id }, { $set: { ...postData } });
     if (updateResult.modifiedCount) return true;
     return null;
   },

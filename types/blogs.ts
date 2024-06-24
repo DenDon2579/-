@@ -15,3 +15,7 @@ export interface IBlog extends IBlogInputModel {
   createdAt: string;
   isMembership: boolean;
 }
+
+export interface IBlogRepositoryInputModel extends IBlogInputModel {
+  isMembership: boolean;
+}
