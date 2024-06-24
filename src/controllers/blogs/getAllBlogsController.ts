@@ -12,7 +12,7 @@ interface IQuery {
 }
 
 export default async (req: Request<any, any, any, IQuery>, res: Response) => {
-  const { searchNameTerm, sortBy, sortDirection, pageNumber, pageSize } =
+  let { searchNameTerm, sortBy, sortDirection, pageNumber, pageSize } =
     req.query;
 
   let sortParams: ISortParams | undefined;

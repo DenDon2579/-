@@ -10,6 +10,8 @@ export default {
     sortParams: ISortParams = { createdAt: 'desc' },
     searchNameTerm?: string
   ): Promise<IPaginator<IBlog>> {
+    if (!page) page = 1;
+    if (!pageSize) pageSize = 10;
     return await BlogRepository.getAll(
       page,
       pageSize,

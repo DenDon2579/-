@@ -11,6 +11,8 @@ export default {
     sortParams: ISortParams = { createdAt: 'desc' },
     blogId?: string
   ) {
+    if (!page) page = 1;
+    if (!pageSize) pageSize = 10;
     const posts = await PostRepository.getAll(
       page,
       pageSize,
