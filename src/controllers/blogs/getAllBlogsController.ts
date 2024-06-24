@@ -17,7 +17,13 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
 
   let sortParams: ISortParams | undefined;
 
-  if (sortBy && sortDirection) {
+  if (!sortBy && sortDirection) {
+    sortParams = {};
+    sortParams.createdAt = sortDirection;
+  } else if (sortBy && !sortDirection) {
+    sortParams = {};
+    sortParams[sortBy] = 'desc';
+  } else {
     sortParams = {};
     sortParams[sortBy] = sortDirection;
   }

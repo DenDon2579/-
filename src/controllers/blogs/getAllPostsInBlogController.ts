@@ -21,7 +21,13 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
 
   let sortParams: ISortParams | undefined;
 
-  if (sortBy && sortDirection) {
+  if (!sortBy && sortDirection) {
+    sortParams = {};
+    sortParams.createdAt = sortDirection;
+  } else if (sortBy && !sortDirection) {
+    sortParams = {};
+    sortParams[sortBy] = 'desc';
+  } else {
     sortParams = {};
     sortParams[sortBy] = sortDirection;
   }
@@ -32,6 +38,6 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams,
     req.params.id
   );
-  console.log(result);
+
   res.status(HTTP_CODES.OK).json(result);
 };
