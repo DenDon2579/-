@@ -1,18 +1,35 @@
+import { ISortParams } from './../../../types/common';
 import { IPost, IPostInputModel, IPostViewModel } from '../../../types/posts';
 import { DB, mongoDB } from '../db/db';
 import BlogRepository from './BlogRepository';
 
 export default {
-  async getAll() {
+  async getAll(
+    page: number = 1,
+    pageSize: number = 10,
+    sortParams: ISortParams = { createdAt: 'desc' },
+    blogId?: string
+  ) {
+    console.log(blogId);
+    const filter = blogId ? { blogId } : {};
     const findResult = await mongoDB
       .collection<IPost>('posts')
-      .find({})
+      .find(filter)
+      .sort(sortParams)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize)
       .toArray();
 
-    return findResult.map((post) => {
+    const totalCount = await mongoDB.collection('posts').countDocuments(filter);
+
+    const pagesCount = Math.ceil(totalCount / pageSize);
+
+    const posts = findResult.map((post) => {
       const { _id: _, ...postWithoutMongoId } = post;
       return postWithoutMongoId;
     });
+
+    return { page, pageSize, pagesCount, totalCount, items: posts };
   },
   async findById(id: string): Promise<IPostViewModel | null> {
     const findResult = await mongoDB.collection<IPost>('posts').findOne({ id });

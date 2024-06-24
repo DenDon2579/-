@@ -19,6 +19,12 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams[sortBy] = sortDirection;
   }
 
-  const result = await PostService.getAll(+pageNumber, +pageSize, sortParams);
+  const result = await PostService.getAll(
+    +pageNumber,
+    +pageSize,
+    sortParams,
+    req.params.id
+  );
+  console.log(result);
   res.status(HTTP_CODES.OK).json(result);
 };

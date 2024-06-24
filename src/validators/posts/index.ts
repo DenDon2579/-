@@ -39,3 +39,10 @@ export const postInputValidator = [
   postBlogIdValidator,
   returnErrors,
 ];
+
+export const postInputValidatorWithoutBlogId = [
+  postTitleValidator,
+  postShortDescriptionValidator,
+  postContentValidator,
+  returnErrors,
+];
