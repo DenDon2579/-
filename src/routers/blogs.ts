@@ -17,6 +17,7 @@ blogsRouter.get('/:id', getBlogByIdController);
 blogsRouter.get('/:id/posts', getAllPostsInBlogController);
 blogsRouter.post(
   '/:id/posts',
+  authMiddleware,
   postInputValidatorWithoutBlogId,
   createPostInBlogController
 );
