@@ -23,7 +23,7 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
   } else if (sortBy && !sortDirection) {
     sortParams = {};
     sortParams[sortBy] = 'desc';
-  } else {
+  } else if (sortBy && sortDirection) {
     sortParams = {};
     sortParams[sortBy] = sortDirection;
   }
