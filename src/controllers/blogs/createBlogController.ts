@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
-import BlogRepository from '../../data/repos/BlogRepository';
 import { HTTP_CODES } from '../../settings';
+import BlogService from '../../services/BlogService';
 
 export default async (req: Request, res: Response) => {
-  const result = await BlogRepository.create(req.body);
+  const result = await BlogService.create(req.body);
   if (result) {
     res.status(HTTP_CODES.CREATED).json(result);
     return;

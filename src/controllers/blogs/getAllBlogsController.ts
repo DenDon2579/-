@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import BlogRepository from '../../data/repos/BlogRepository';
 import { HTTP_CODES } from '../../settings';
+import BlogService from '../../services/BlogService';
 
 export default async (req: Request, res: Response) => {
-  const result = await BlogRepository.getAll();
+  const result = await BlogService.getAll();
   res.status(HTTP_CODES.OK).json(result);
 };

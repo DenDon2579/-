@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import BlogRepository from '../../data/repos/BlogRepository';
 import { HTTP_CODES } from '../../settings';
+import BlogService from '../../services/BlogService';
 
 export default async (req: Request, res: Response) => {
-  const result = await BlogRepository.updateById(req.params.id, req.body);
+  const result = await BlogService.updateById(req.params.id, req.body);
   if (result) {
     res.status(HTTP_CODES.NO_CONTENT).json(result);
     return;
