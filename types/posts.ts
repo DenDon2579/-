@@ -18,4 +18,9 @@ export interface IPost {
   content: string; // maxLength: 1000
   blogId: string;
   createdAt: string;
+  blogName: string;
+}
+
+export interface IPostRepositoryInputModel extends IPostInputModel {
+  blogName?: string;
 }

@@ -13,7 +13,9 @@ export default {
     sortParams: ISortParams = { createdAt: 'desc' },
     searchNameTerm?: string
   ): Promise<IPaginator<IBlog>> {
-    const filter = searchNameTerm ? { name: { $regex: searchNameTerm } } : {};
+    const filter = searchNameTerm
+      ? { name: { $regex: searchNameTerm, $options: 'i' } }
+      : {};
     const findResult = await mongoDB
       .collection<IBlog>('blogs')
       .find(filter)

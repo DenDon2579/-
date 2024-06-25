@@ -1,5 +1,10 @@
 import { ISortParams } from './../../../types/common';
-import { IPost, IPostInputModel, IPostViewModel } from '../../../types/posts';
+import {
+  IPost,
+  IPostInputModel,
+  IPostRepositoryInputModel,
+  IPostViewModel,
+} from '../../../types/posts';
 import { DB, mongoDB } from '../db/db';
 import BlogRepository from './BlogRepository';
 
@@ -15,11 +20,11 @@ export default {
     const findResult = await mongoDB
       .collection<IPost>('posts')
       .find(filter)
-      .sort(sortParams)
+      .sort({ blogName: 'desc' })
       .skip(pageSize * (page - 1))
       .limit(pageSize)
       .toArray();
-
+    console.log(sortParams);
     const totalCount = await mongoDB.collection('posts').countDocuments(filter);
 
     const pagesCount = Math.ceil(totalCount / pageSize);
@@ -45,7 +50,7 @@ export default {
     }
     return null;
   },
-  async create(postData: IPostInputModel) {
+  async create(postData: IPostRepositoryInputModel) {
     const id = Date.now().toString();
     await mongoDB.collection('posts').insertOne({
       id,

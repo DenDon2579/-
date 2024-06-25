@@ -20,20 +20,14 @@ export default {
       blogId
     );
 
-    posts.items = await Promise.all(
-      posts.items.map(async (post) => ({
-        ...post,
-        blogName: (await BlogRepository.findById(post.blogId))?.name,
-      }))
-    );
-
     return posts;
   },
   async findById(id: string): Promise<IPostViewModel | null> {
     return await PostRepository.findById(id);
   },
   async create(postData: IPostInputModel) {
-    return await PostRepository.create(postData);
+    const blogName = (await BlogRepository.findById(postData.blogId))?.name;
+    return await PostRepository.create({ ...postData, blogName });
   },
   async updateById(id: string, postData: IPostInputModel) {
     return await PostRepository.updateById(id, postData);
