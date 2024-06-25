@@ -20,7 +20,7 @@ export default {
     const findResult = await mongoDB
       .collection<IPost>('posts')
       .find(filter)
-      .sort({ blogName: 'desc' })
+      .sort(sortParams)
       .skip(pageSize * (page - 1))
       .limit(pageSize)
       .toArray();
