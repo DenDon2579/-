@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
 import PostService from '../../services/PostService';
 import { ISortParams } from '../../../types/common';
-import BlogRepository from '../../data/repos/BlogRepository';
+import BlogRepository from '../../data/repos/blogs/BlogRepository';
+import PostQueryRepository from '../../data/repos/posts/PostQueryRepository';
+import BlogQueryRepository from '../../data/repos/blogs/BlogQueryRepository';
 
 interface IQuery {
   sortBy: string;
@@ -14,7 +16,7 @@ interface IQuery {
 export default async (req: Request<any, any, any, IQuery>, res: Response) => {
   const { sortBy, sortDirection, pageNumber, pageSize } = req.query;
 
-  if (!(await BlogRepository.findById(req.params.id))) {
+  if (!(await BlogQueryRepository.findById(req.params.id))) {
     res.sendStatus(404);
     return;
   }
@@ -32,7 +34,7 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams[sortBy] = sortDirection;
   }
 
-  const result = await PostService.getAll(
+  const result = await PostQueryRepository.getAll(
     +pageNumber,
     +pageSize,
     sortParams,

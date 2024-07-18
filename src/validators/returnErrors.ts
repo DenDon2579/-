@@ -1,4 +1,4 @@
-import { IErrorResult, IFieldError } from './../../types/error';
+import { IErrorResult, IFieldError } from '../../types/error';
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { HTTP_CODES } from '../settings';

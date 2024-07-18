@@ -1,32 +1,16 @@
-import { ISortParams } from '../../types/common';
-import { IPost, IPostInputModel, IPostViewModel } from '../../types/posts';
+import { ISortParams, IdType } from '../../types/common';
+import {
+  IPostDbModel,
+  IPostInputModel,
+  IPostViewModel,
+} from '../../types/posts';
 import { mongoDB } from '../data/db/db';
-import BlogRepository from '../data/repos/BlogRepository';
-import PostRepository from '../data/repos/PostRepository';
+import BlogRepository from '../data/repos/blogs/BlogRepository';
+import PostRepository from '../data/repos/posts/PostRepository';
 
 export default {
-  async getAll(
-    page: number = 1,
-    pageSize: number = 10,
-    sortParams: ISortParams = { createdAt: 'desc' },
-    blogId?: string
-  ) {
-    if (!page) page = 1;
-    if (!pageSize) pageSize = 10;
-    const posts = await PostRepository.getAll(
-      page,
-      pageSize,
-      sortParams,
-      blogId
-    );
-
-    return posts;
-  },
-  async findById(id: string): Promise<IPostViewModel | null> {
-    return await PostRepository.findById(id);
-  },
-  async create(postData: IPostInputModel) {
-    const blogName = (await BlogRepository.findById(postData.blogId))?.name;
+  async create(postData: IPostInputModel): Promise<IdType | null> {
+    const blogName = await BlogRepository.getBlogNameById(postData.blogId);
     return await PostRepository.create({ ...postData, blogName });
   },
   async updateById(id: string, postData: IPostInputModel) {
@@ -34,5 +18,8 @@ export default {
   },
   async deleteById(id: string) {
     return await PostRepository.deleteById(id);
+  },
+  async updateBlogNameInPostsByBlogId(blogId: string, newBlogName: string) {
+    PostRepository.updateBlogNameInPostsByBlogId(blogId, newBlogName);
   },
 };

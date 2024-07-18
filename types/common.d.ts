@@ -9,3 +9,5 @@ export interface IPaginator<T> {
   totalCount: number;
   items: T[];
 }
+
+export type IdType = string;

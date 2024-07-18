@@ -1,7 +1,5 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import { SETTINGS } from '../../settings';
-import { IPost } from '../../../types/posts';
-import { IBlog } from '../../../types/blogs';
 
 const mongo = new MongoClient(SETTINGS.MONGO, {
   serverApi: {
@@ -23,13 +21,3 @@ export async function startMongo() {
 }
 
 export const mongoDB = mongo.db('main');
-
-interface IDB {
-  posts: IPost[];
-  blogs: IBlog[];
-}
-
-export const DB: IDB = {
-  posts: [],
-  blogs: [],
-};

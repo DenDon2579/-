@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
-import BlogService from '../../services/BlogService';
 import { ISortParams } from '../../../types/common';
+import BlogQueryRepository from '../../data/repos/blogs/BlogQueryRepository';
 
 interface IQuery {
   searchNameTerm: string;
@@ -28,7 +28,7 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams[sortBy] = sortDirection;
   }
 
-  const result = await BlogService.getAll(
+  const result = await BlogQueryRepository.getAll(
     +pageNumber,
     +pageSize,
     sortParams,

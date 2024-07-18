@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
 import PostService from '../../services/PostService';
 import { ISortParams } from '../../../types/common';
+import PostQueryRepository from '../../data/repos/posts/PostQueryRepository';
 
 interface IQuery {
   sortBy: string;
@@ -25,6 +26,10 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams[sortBy] = sortDirection;
   }
 
-  const result = await PostService.getAll(+pageNumber, +pageSize, sortParams);
+  const result = await PostQueryRepository.getAll(
+    +pageNumber,
+    +pageSize,
+    sortParams
+  );
   res.status(HTTP_CODES.OK).json(result);
 };

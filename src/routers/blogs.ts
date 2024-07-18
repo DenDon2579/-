@@ -6,9 +6,9 @@ import getBlogByIdController from '../controllers/blogs/getBlogByIdController';
 import updateBlogByIdController from '../controllers/blogs/updateBlogByIdController';
 import deleteBlogByIdController from '../controllers/blogs/deleteBlogByIdController';
 import authMiddleware from '../controllers/authMiddleware';
-import getAllPostsInBlogController from '../controllers/blogs/getAllPostsInBlogController';
+import getAllPostsInBlogController from '../controllers/posts/getAllPostsInBlogController';
 import { postInputValidatorWithoutBlogId } from '../validators/posts';
-import createPostInBlogController from '../controllers/blogs/createPostInBlogController';
+import createPostInBlogController from '../controllers/posts/createPostInBlogController';
 
 export const blogsRouter = Router();
 

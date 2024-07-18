@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 import returnErrors from '../returnErrors';
-import BlogRepository from '../../data/repos/BlogRepository';
+import BlogRepository from '../../data/repos/blogs/BlogRepository';
 
 const postTitleValidator = body('title')
   .isString()
