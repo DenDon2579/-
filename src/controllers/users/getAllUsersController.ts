@@ -13,7 +13,7 @@ interface IQuery {
   pageSize: string;
 }
 
-export default async (req: Request<any, any, any, IQuery>, res: Response) => {
+export default async (req: Request, res: Response) => {
   let {
     searchLoginTerm,
     searchEmailTerm,
@@ -23,25 +23,30 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     pageSize,
   } = req.query;
 
-  let sortParams: ISortParams | undefined;
+  let sortParams: any;
 
   if (!sortBy && sortDirection) {
     sortParams = {};
     sortParams.createdAt = sortDirection;
   } else if (sortBy && !sortDirection) {
     sortParams = {};
-    sortParams[sortBy] = 'desc';
+    sortParams[sortBy as string] = 'desc';
   } else if (sortBy && sortDirection) {
     sortParams = {};
-    sortParams[sortBy] = sortDirection;
+    sortParams[sortBy as string] = sortDirection;
+  }
+
+  if (!pageNumber || !pageSize) {
+    res.sendStatus(400);
+    return;
   }
 
   const result = await UserQueryRepository.getAll(
     +pageNumber,
     +pageSize,
     sortParams,
-    searchEmailTerm,
-    searchLoginTerm
+    searchEmailTerm as string,
+    searchLoginTerm as string
   );
   res.status(HTTP_CODES.OK).json(result);
 };
