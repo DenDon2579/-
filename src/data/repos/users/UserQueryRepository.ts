@@ -48,7 +48,7 @@ export default {
   },
   async findById(id: string): Promise<IUserViewModel | null> {
     const user = await mongoDB
-      .collection<IUserDbModel>('users	')
+      .collection<IUserDbModel>('users')
       .findOne({ id });
 
     if (user) {

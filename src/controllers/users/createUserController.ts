@@ -11,7 +11,7 @@ export default async (req: Request, res: Response) => {
     });
     return;
   }
-
+  console.log(createdUserId);
   if (createdUserId) {
     const userData = await UserQueryRepository.findById(
       createdUserId as string
