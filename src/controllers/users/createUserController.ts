@@ -5,7 +5,6 @@ import { HTTP_CODES } from '../../settings';
 
 export default async (req: Request, res: Response) => {
   const [createdUserId, error] = await UserService.create(req.body);
-
   if (error) {
     res.status(HTTP_CODES.BAD_REQUEST).json({
       errorsMessages: [error],
@@ -18,8 +17,13 @@ export default async (req: Request, res: Response) => {
       createdUserId as string
     );
 
+    console.log(userData);
+
     if (userData) {
       res.status(HTTP_CODES.CREATED).json(userData);
+      return;
     }
   }
+
+  res.sendStatus(HTTP_CODES.BAD_REQUEST);
 };

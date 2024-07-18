@@ -36,9 +36,12 @@ export default async (req: Request, res: Response) => {
     sortParams[sortBy as string] = sortDirection;
   }
 
-  if (!pageNumber || !pageSize) {
-    res.sendStatus(400);
-    return;
+  if (!pageNumber) {
+    pageNumber = '1';
+  }
+
+  if (!pageSize) {
+    pageSize = '10';
   }
 
   const result = await UserQueryRepository.getAll(

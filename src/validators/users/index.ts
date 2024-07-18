@@ -5,7 +5,7 @@ const loginValidator = body('login')
   .isString()
   .withMessage('This field is required')
   .trim()
-  .isLength({ min: 1, max: 15 })
+  .isLength({ min: 3, max: 10 })
   .withMessage('Invalid length');
 // .matches('/^[a-zA-Z0-9_-]*$/')
 // .withMessage('Invalid pattern');

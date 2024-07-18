@@ -5,6 +5,7 @@ import UserRepository from '../data/repos/users/UserRepository';
 export default {
   async create(userData: IUserInputModel) {
     if (await UserRepository.findByLoginOrEmail(userData.login)) {
+      console.log(await UserRepository.findByLoginOrEmail(userData.login));
       return [null, { field: 'login', message: 'login should be unique' }];
     }
 
