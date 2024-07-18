@@ -11,7 +11,8 @@ export default {
     searchLoginTerm?: string | undefined
   ): Promise<IPaginator<IUserViewModel>> {
     const filter: any = {};
-
+    if (!page) page = 1;
+    if (!pageSize) pageSize = 10;
     if (searchEmailTerm) {
       filter.login = { $regex: searchEmailTerm, $options: 'i' };
     }

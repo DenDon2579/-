@@ -10,6 +10,8 @@ export default {
     blogId?: string
   ) {
     console.log(blogId);
+    if (!page) page = 1;
+    if (!pageSize) pageSize = 10;
     const filter = blogId ? { blogId } : {};
     const findResult = await mongoDB
       .collection<IPostDbModel>('posts')

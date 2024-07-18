@@ -14,7 +14,7 @@ export default async (req: Request, res: Response) => {
     blogId: req.params.id,
   });
   if (createdPostId) {
-    const postData = PostQueryRepository.findById(createdPostId);
+    const postData = await PostQueryRepository.findById(createdPostId);
     res.status(HTTP_CODES.CREATED).json(postData);
     return;
   }

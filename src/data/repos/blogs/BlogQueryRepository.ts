@@ -12,6 +12,8 @@ export default {
     const filter = searchNameTerm
       ? { name: { $regex: searchNameTerm, $options: 'i' } }
       : {};
+    if (!page) page = 1;
+    if (!pageSize) pageSize = 10;
     const findResult = await mongoDB
       .collection<IBlogDbModel>('blogs')
       .find(filter)

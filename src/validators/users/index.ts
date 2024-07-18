@@ -6,9 +6,9 @@ const loginValidator = body('login')
   .withMessage('This field is required')
   .trim()
   .isLength({ min: 1, max: 15 })
-  .withMessage('Invalid length')
-  .matches('/^[a-zA-Z0-9_-]*$/')
-  .withMessage('Invalid pattern');
+  .withMessage('Invalid length');
+// .matches('/^[a-zA-Z0-9_-]*$/')
+// .withMessage('Invalid pattern');
 
 const emailValidator = body('email')
   .isString()
