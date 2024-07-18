@@ -13,12 +13,19 @@ export default {
     const filter: any = {};
     if (!page) page = 1;
     if (!pageSize) pageSize = 10;
-    if (searchEmailTerm) {
-      filter.login = { $regex: searchEmailTerm, $options: 'i' };
-    }
+    if (searchEmailTerm && searchLoginTerm) {
+      filter.$or = [
+        { email: { $regex: searchEmailTerm, $options: 'i' } },
+        { login: { $regex: searchLoginTerm, $options: 'i' } },
+      ];
+    } else {
+      if (searchEmailTerm) {
+        filter.email = { $regex: searchEmailTerm, $options: 'i' };
+      }
 
-    if (searchLoginTerm) {
-      filter.login = { $regex: searchLoginTerm, $options: 'i' };
+      if (searchLoginTerm) {
+        filter.login = { $regex: searchLoginTerm, $options: 'i' };
+      }
     }
 
     const findResult = await mongoDB
