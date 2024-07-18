@@ -30,7 +30,7 @@ export default {
       .toArray();
 
     const totalCount = await mongoDB
-      .collection<IUserDbModel>('blogs')
+      .collection<IUserDbModel>('users')
       .countDocuments(filter);
 
     const pagesCount = Math.ceil(totalCount / pageSize);
