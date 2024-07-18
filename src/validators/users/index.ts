@@ -7,14 +7,14 @@ const loginValidator = body('login')
   .trim()
   .isLength({ min: 1, max: 15 })
   .withMessage('Invalid length')
-  .matches('^[a-zA-Z0-9_-]*$')
+  .matches('/^[a-zA-Z0-9_-]*$/')
   .withMessage('Invalid pattern');
 
 const emailValidator = body('email')
   .isString()
   .withMessage('This field is required')
-  .matches('^[w-.]+@([w-]+.)+[w-]{2,4}$')
-  .withMessage('Invalid pattern');
+  .isEmail()
+  .withMessage('Not email');
 
 const passwordValidator = body('password')
   .isString()
