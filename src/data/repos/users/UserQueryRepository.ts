@@ -12,20 +12,22 @@ export default {
     searchEmailTerm?: string | undefined,
     searchLoginTerm?: string | undefined
   ): Promise<IPaginator<IUserViewModel>> {
-    const filter: any = {};
+    let filter: any = {};
     filter.$or = [];
 
     if (searchEmailTerm) {
-      filter.$or.push({ $regex: searchEmailTerm, $options: 'i' });
+      filter.$or.push({ email: { $regex: searchEmailTerm, $options: 'i' } });
     }
 
     if (searchLoginTerm) {
-      filter.$or.push({ $regex: searchLoginTerm, $options: 'i' });
+      filter.$or.push({ login: { $regex: searchLoginTerm, $options: 'i' } });
     }
+
+    filter = filter.$or.length ? filter : {};
 
     const findResult = await mongoDB
       .collection<IUserDbModel>('users')
-      .find(filter.$or.length ? filter : {})
+      .find(filter)
       .sort(sortParams)
       .skip(pageSize * (page - 1))
       .limit(pageSize)
