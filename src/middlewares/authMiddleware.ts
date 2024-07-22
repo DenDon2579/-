@@ -1,22 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { SETTINGS } from '../settings';
 
-export default async (
-  req: Request<any, any, any, any>,
-  res: Response,
-  next: NextFunction
-) => {
+export default (req: Request, res: Response, next: NextFunction) => {
   if (req.headers.authorization) {
-    try {
-      const token = req.headers.authorization?.split(' ')[1];
-      const payload = jwt.verify(token, SETTINGS.SECRET) as jwt.JwtPayload;
-      req.userId = payload.userId;
-      next();
-      return;
-    } catch (e) {
-      res.sendStatus(401);
-      return;
+    const [authType, credentials] = req.headers.authorization?.split(' ');
+    if (authType === 'Basic' && credentials) {
+      const [login, password] = Buffer.from(credentials, 'base64')
+        .toString()
+        .split(':');
+      if (login === 'admin' && password === 'qwerty') {
+        next();
+        return;
+      }
     }
   }
   res.sendStatus(401);

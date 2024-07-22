@@ -9,6 +9,7 @@ import authMiddleware from '../middlewares/authMiddleware';
 import { commentInputValidator } from '../validators/comments';
 import createPostCommentController from '../controllers/posts/createPostCommentController';
 import getCommentsOfPostController from '../controllers/posts/getCommentsOfPostController';
+import bearerAuthMiddleware from '../middlewares/bearerAuthMiddleware';
 
 export const postsRouter = Router();
 
@@ -25,7 +26,7 @@ postsRouter.delete('/:id', authMiddleware, deletePostByIdController);
 
 postsRouter.post(
   '/:postId/comments',
-  authMiddleware,
+  bearerAuthMiddleware,
   commentInputValidator,
   createPostCommentController
 );

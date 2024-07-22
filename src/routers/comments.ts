@@ -4,16 +4,17 @@ import { commentInputValidator } from '../validators/comments';
 import updateCommentController from '../controllers/comments/updateCommentController';
 import getCommentController from '../controllers/comments/getCommentController';
 import deleteCommentController from '../controllers/comments/deleteCommentController';
+import bearerAuthMiddleware from '../middlewares/bearerAuthMiddleware';
 
 export const commentsRouter = Router();
 
 commentsRouter.put(
   '/:id',
-  authMiddleware,
+  bearerAuthMiddleware,
   commentInputValidator,
   updateCommentController
 );
 
 commentsRouter.get('/:id', getCommentController);
 
-commentsRouter.delete('/:id', authMiddleware, deleteCommentController);
+commentsRouter.delete('/:id', bearerAuthMiddleware, deleteCommentController);
