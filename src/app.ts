@@ -8,6 +8,7 @@ import { usersRouter } from './routers/users';
 import authController from './controllers/auth/authController';
 import userInfoController from './controllers/auth/userInfoController';
 import authMiddleware from './middlewares/authMiddleware';
+import { commentsRouter } from './routers/comments';
 
 export const app = Express();
 
@@ -17,6 +18,7 @@ app.use('/blogs', blogsRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 app.use('/testing', testingRouter);
+app.use('/comments', commentsRouter);
 
 app.post('/auth/login', authController);
 app.get('/auth/me', authMiddleware, userInfoController);
