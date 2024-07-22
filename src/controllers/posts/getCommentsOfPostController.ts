@@ -13,6 +13,12 @@ interface IQuery {
 }
 
 export default async (req: Request<any, any, any, IQuery>, res: Response) => {
+  const isPostExist = !!(await PostQueryRepository.findById(req.params.postId));
+  if (!isPostExist) {
+    res.sendStatus(HTTP_CODES.NOT_FOUND);
+    return;
+  }
+
   const { sortBy, sortDirection, pageNumber, pageSize } = req.query;
 
   const sortParams: ISortParams = {};

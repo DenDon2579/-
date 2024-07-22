@@ -6,7 +6,7 @@ import CommentService from '../../services/CommentService';
 import CommentQueryRepository from '../../data/repos/comments/CommentQueryRepository';
 
 export default async (req: Request, res: Response) => {
-  const isPostExist = !!PostQueryRepository.findById(req.params.postId);
+  const isPostExist = !!(await PostQueryRepository.findById(req.params.postId));
   if (!isPostExist) {
     res.sendStatus(HTTP_CODES.NOT_FOUND);
     return;
