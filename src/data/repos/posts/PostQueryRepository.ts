@@ -15,7 +15,7 @@ export default {
       .skip(pageSize * (page - 1))
       .limit(pageSize)
       .toArray();
-    console.log(sortParams);
+
     const totalCount = await mongoDB.collection('posts').countDocuments(filter);
 
     const pagesCount = Math.ceil(totalCount / pageSize);

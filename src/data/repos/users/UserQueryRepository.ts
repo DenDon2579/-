@@ -25,7 +25,7 @@ export default {
 
     const findResult = await mongoDB
       .collection<IUserDbModel>('users')
-      .find(filter)
+      .find(filter.$or.length ? filter : {})
       .sort(sortParams)
       .skip(pageSize * (page - 1))
       .limit(pageSize)
