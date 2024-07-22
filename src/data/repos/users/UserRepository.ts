@@ -2,8 +2,8 @@ import {
   IUserDbModel,
   IUserRepoModel,
   IUserViewModel,
-} from './../../../../types/users.d';
-import { IPaginator, ISortParams } from '../../../../types/common';
+} from '../../../types/users';
+import { IPaginator, ISortParams } from '../../../types/common';
 import { mongoDB } from '../../db/db';
 
 export default {

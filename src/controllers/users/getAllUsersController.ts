@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ISortParams } from '../../../types/common';
+import { IPaginatorParams, ISortParams } from '../../types/common';
 import UserRepository from '../../data/repos/users/UserRepository';
 import { HTTP_CODES } from '../../settings';
 import UserQueryRepository from '../../data/repos/users/UserQueryRepository';
@@ -13,7 +13,7 @@ interface IQuery {
   pageSize: string;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req: Request<any, any, any, IQuery>, res: Response) => {
   let {
     searchLoginTerm,
     searchEmailTerm,
@@ -23,31 +23,18 @@ export default async (req: Request, res: Response) => {
     pageSize,
   } = req.query;
 
-  let sortParams: any;
+  const sortParams: ISortParams = {};
 
-  if (!sortBy && sortDirection) {
-    sortParams = {};
-    sortParams.createdAt = sortDirection;
-  } else if (sortBy && !sortDirection) {
-    sortParams = {};
-    sortParams[sortBy as string] = 'desc';
-  } else if (sortBy && sortDirection) {
-    sortParams = {};
-    sortParams[sortBy as string] = sortDirection;
-  }
+  sortParams[sortBy || 'createdAt'] = sortDirection || 'desc';
 
-  if (!pageNumber) {
-    pageNumber = '1';
-  }
-
-  if (!pageSize) {
-    pageSize = '10';
-  }
+  let paginatorParams: IPaginatorParams = {
+    pageNumber: +pageNumber || 1,
+    pageSize: +pageSize || 10,
+    sortParams: sortParams,
+  };
 
   const result = await UserQueryRepository.getAll(
-    +pageNumber,
-    +pageSize,
-    sortParams,
+    paginatorParams,
     searchEmailTerm as string,
     searchLoginTerm as string
   );

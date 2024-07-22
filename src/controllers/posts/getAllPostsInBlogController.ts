@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
 import PostService from '../../services/PostService';
-import { ISortParams } from '../../../types/common';
+import { IPaginatorParams, ISortParams } from '../../types/common';
 import BlogRepository from '../../data/repos/blogs/BlogRepository';
 import PostQueryRepository from '../../data/repos/posts/PostQueryRepository';
 import BlogQueryRepository from '../../data/repos/blogs/BlogQueryRepository';
@@ -21,23 +21,18 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     return;
   }
 
-  let sortParams: ISortParams | undefined;
+  const sortParams: ISortParams = {};
 
-  if (!sortBy && sortDirection) {
-    sortParams = {};
-    sortParams.createdAt = sortDirection;
-  } else if (sortBy && !sortDirection) {
-    sortParams = {};
-    sortParams[sortBy] = 'desc';
-  } else if (sortBy && sortDirection) {
-    sortParams = {};
-    sortParams[sortBy] = sortDirection;
-  }
+  sortParams[sortBy || 'createdAt'] = sortDirection || 'desc';
+
+  let paginatorParams: IPaginatorParams = {
+    pageNumber: +pageNumber || 1,
+    pageSize: +pageSize || 10,
+    sortParams: sortParams,
+  };
 
   const result = await PostQueryRepository.getAll(
-    +pageNumber,
-    +pageSize,
-    sortParams,
+    paginatorParams,
     req.params.id
   );
 

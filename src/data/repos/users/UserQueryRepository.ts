@@ -1,31 +1,26 @@
-import { IPaginator, ISortParams } from '../../../../types/common';
-import { IUserDbModel, IUserViewModel } from '../../../../types/users';
+import {
+  IPaginator,
+  IPaginatorParams,
+  ISortParams,
+} from '../../../types/common';
+import { IUserDbModel, IUserViewModel } from '../../../types/users';
 import { mongoDB } from '../../db/db';
 
 export default {
   async getAll(
-    page: number = 1,
-    pageSize: number = 10,
-    sortParams: ISortParams = { createdAt: 'desc' },
+    { pageNumber: page, pageSize, sortParams }: IPaginatorParams,
     searchEmailTerm?: string | undefined,
     searchLoginTerm?: string | undefined
   ): Promise<IPaginator<IUserViewModel>> {
     const filter: any = {};
-    if (!page) page = 1;
-    if (!pageSize) pageSize = 10;
-    if (searchEmailTerm && searchLoginTerm) {
-      filter.$or = [
-        { email: { $regex: searchEmailTerm, $options: 'i' } },
-        { login: { $regex: searchLoginTerm, $options: 'i' } },
-      ];
-    } else {
-      if (searchEmailTerm) {
-        filter.email = { $regex: searchEmailTerm, $options: 'i' };
-      }
+    filter.$or = [];
 
-      if (searchLoginTerm) {
-        filter.login = { $regex: searchLoginTerm, $options: 'i' };
-      }
+    if (searchEmailTerm) {
+      filter.$or.push({ $regex: searchEmailTerm, $options: 'i' });
+    }
+
+    if (searchLoginTerm) {
+      filter.$or.push({ $regex: searchLoginTerm, $options: 'i' });
     }
 
     const findResult = await mongoDB

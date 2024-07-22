@@ -1,10 +1,10 @@
-import { ISortParams, IdType } from '../../../../types/common';
+import { ISortParams, IdType } from '../../../types/common';
 import {
   IPostDbModel,
   IPostInputModel,
   IPostRepoInputModel,
   IPostViewModel,
-} from '../../../../types/posts';
+} from '../../../types/posts';
 import { mongoDB } from '../../db/db';
 import BlogRepository from '../blogs/BlogRepository';
 

@@ -3,6 +3,7 @@ import { HTTP_CODES } from '../../settings';
 import PostService from '../../services/PostService';
 import { IPaginatorParams, ISortParams } from '../../types/common';
 import PostQueryRepository from '../../data/repos/posts/PostQueryRepository';
+import CommentQueryRepository from '../../data/repos/comments/CommentQueryRepository';
 
 interface IQuery {
   sortBy: string;
@@ -24,6 +25,14 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
     sortParams: sortParams,
   };
 
-  const result = await PostQueryRepository.getAll(paginatorParams);
-  res.status(HTTP_CODES.OK).json(result);
+  const result = await CommentQueryRepository.getAllCommentsOfPost(
+    paginatorParams,
+    req.params.postId
+  );
+
+  if (result) {
+    res.status(HTTP_CODES.OK).json(result);
+  } else {
+    res.sendStatus(HTTP_CODES.NOT_FOUND);
+  }
 };

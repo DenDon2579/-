@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { HTTP_CODES } from '../../settings';
-import { ISortParams } from '../../../types/common';
+import { IPaginatorParams, ISortParams } from '../../types/common';
 import BlogQueryRepository from '../../data/repos/blogs/BlogQueryRepository';
 
 interface IQuery {
@@ -15,23 +15,18 @@ export default async (req: Request<any, any, any, IQuery>, res: Response) => {
   let { searchNameTerm, sortBy, sortDirection, pageNumber, pageSize } =
     req.query;
 
-  let sortParams: ISortParams | undefined;
+  const sortParams: ISortParams = {};
 
-  if (!sortBy && sortDirection) {
-    sortParams = {};
-    sortParams.createdAt = sortDirection;
-  } else if (sortBy && !sortDirection) {
-    sortParams = {};
-    sortParams[sortBy] = 'desc';
-  } else if (sortBy && sortDirection) {
-    sortParams = {};
-    sortParams[sortBy] = sortDirection;
-  }
+  sortParams[sortBy || 'createdAt'] = sortDirection || 'desc';
+
+  let paginatorParams: IPaginatorParams = {
+    pageNumber: +pageNumber || 1,
+    pageSize: +pageSize || 10,
+    sortParams: sortParams,
+  };
 
   const result = await BlogQueryRepository.getAll(
-    +pageNumber,
-    +pageSize,
-    sortParams,
+    paginatorParams,
     searchNameTerm
   );
   res.status(HTTP_CODES.OK).json(result);

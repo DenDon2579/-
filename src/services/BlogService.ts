@@ -1,5 +1,5 @@
-import { IBlogInputModel, IBlogViewModel } from '../../types/blogs';
-import { IPaginator, ISortParams, IdType } from '../../types/common';
+import { IBlogInputModel, IBlogViewModel } from '../types/blogs';
+import { IPaginator, ISortParams, IdType } from '../types/common';
 import { mongoDB } from '../data/db/db';
 import BlogRepository from '../data/repos/blogs/BlogRepository';
 import PostService from './PostService';

@@ -1,19 +1,20 @@
-import { IBlogDbModel, IBlogViewModel } from '../../../../types/blogs';
-import { IPaginator, ISortParams } from '../../../../types/common';
+import { IBlogDbModel, IBlogViewModel } from '../../../types/blogs';
+import {
+  IPaginator,
+  IPaginatorParams,
+  ISortParams,
+} from '../../../types/common';
 import { mongoDB } from '../../db/db';
 
 export default {
   async getAll(
-    page: number = 1,
-    pageSize: number = 10,
-    sortParams: ISortParams = { createdAt: 'desc' },
+    { pageNumber: page, pageSize, sortParams }: IPaginatorParams,
     searchNameTerm?: string
   ): Promise<IPaginator<IBlogViewModel>> {
     const filter = searchNameTerm
       ? { name: { $regex: searchNameTerm, $options: 'i' } }
       : {};
-    if (!page) page = 1;
-    if (!pageSize) pageSize = 10;
+
     const findResult = await mongoDB
       .collection<IBlogDbModel>('blogs')
       .find(filter)

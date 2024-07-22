@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import getAllUsersController from '../controllers/users/getAllUsersController';
-import authMiddleware from '../controllers/authMiddleware';
+import authMiddleware from '../middlewares/authMiddleware';
 import { userInputValidator } from '../validators/users';
 import createUserController from '../controllers/users/createUserController';
 import deleteUserController from '../controllers/users/deleteUserController';

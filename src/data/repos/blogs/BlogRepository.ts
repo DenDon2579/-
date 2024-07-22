@@ -3,8 +3,8 @@ import {
   IBlogInputModel,
   IBlogRepoInputModel,
   IBlogViewModel,
-} from '../../../../types/blogs';
-import { IPaginator, ISortParams, IdType } from '../../../../types/common';
+} from '../../../types/blogs';
+import { IPaginator, ISortParams, IdType } from '../../../types/common';
 import { mongoDB } from '../../db/db';
 
 export default {

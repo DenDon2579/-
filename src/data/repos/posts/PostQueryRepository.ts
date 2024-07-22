@@ -1,17 +1,12 @@
-import { ISortParams } from '../../../../types/common';
-import { IPostDbModel, IPostViewModel } from '../../../../types/posts';
+import { IPaginatorParams, ISortParams } from '../../../types/common';
+import { IPostDbModel, IPostViewModel } from '../../../types/posts';
 import { mongoDB } from '../../db/db';
 
 export default {
   async getAll(
-    page: number = 1,
-    pageSize: number = 10,
-    sortParams: ISortParams = { createdAt: 'desc' },
+    { pageNumber: page, pageSize, sortParams }: IPaginatorParams,
     blogId?: string
   ) {
-    console.log(blogId);
-    if (!page) page = 1;
-    if (!pageSize) pageSize = 10;
     const filter = blogId ? { blogId } : {};
     const findResult = await mongoDB
       .collection<IPostDbModel>('posts')

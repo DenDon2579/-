@@ -4,6 +4,7 @@ dotenv.config();
 export const SETTINGS = {
   PORT: process.env.PORT || 3000,
   MONGO: process.env.MONGO || '',
+  SECRET: process.env.SECRET || '123',
 };
 
 export const HTTP_CODES = {
@@ -13,4 +14,5 @@ export const HTTP_CODES = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
 };

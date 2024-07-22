@@ -5,7 +5,7 @@ import getAllBlogsController from '../controllers/blogs/getAllBlogsController';
 import getBlogByIdController from '../controllers/blogs/getBlogByIdController';
 import updateBlogByIdController from '../controllers/blogs/updateBlogByIdController';
 import deleteBlogByIdController from '../controllers/blogs/deleteBlogByIdController';
-import authMiddleware from '../controllers/authMiddleware';
+import authMiddleware from '../middlewares/authMiddleware';
 import getAllPostsInBlogController from '../controllers/posts/getAllPostsInBlogController';
 import { postInputValidatorWithoutBlogId } from '../validators/posts';
 import createPostInBlogController from '../controllers/posts/createPostInBlogController';

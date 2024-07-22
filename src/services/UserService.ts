@@ -1,4 +1,4 @@
-import { IUserInputModel } from '../../types/users';
+import { IUserInputModel } from '../types/users';
 import { genSalt, hash } from 'bcrypt';
 import UserRepository from '../data/repos/users/UserRepository';
 
@@ -15,7 +15,15 @@ export default {
 
     const salt = await genSalt(10);
     const hash = await this._createHash(userData.password, salt);
-    return [await UserRepository.create({ ...userData, salt, hash }), null];
+    return [
+      await UserRepository.create({
+        salt,
+        hash,
+        login: userData.login,
+        email: userData.email,
+      }),
+      null,
+    ];
   },
 
   async deleteById(id: string) {
@@ -25,15 +33,15 @@ export default {
   async checkCredentials(
     loginOrEmail: string,
     password: string
-  ): Promise<boolean> {
+  ): Promise<null | string> {
     const userData = await UserRepository.findByLoginOrEmail(loginOrEmail);
     if (userData) {
       const hash = await this._createHash(password, userData.salt);
       if (hash === userData.hash) {
-        return true;
+        return userData.id;
       }
     }
-    return false;
+    return null;
   },
 
   async _createHash(password: string, salt: string) {
