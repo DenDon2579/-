@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default (
+  req: Request<any, any, any, any>,
+  res: Response,
+  next: NextFunction
+) => {
   if (req.headers.authorization) {
     const [authType, credentials] = req.headers.authorization?.split(' ');
     if (authType === 'Basic' && credentials) {
