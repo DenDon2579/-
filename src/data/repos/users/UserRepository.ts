@@ -3,7 +3,6 @@ import {
   IUserRepoModel,
   IUserViewModel,
 } from '../../../types/users';
-import { IPaginator, ISortParams } from '../../../types/common';
 import { mongoDB } from '../../db/db';
 
 export default {
@@ -31,5 +30,35 @@ export default {
     return await mongoDB
       .collection<IUserDbModel>('users')
       .findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
+  },
+  async findById(id: string) {
+    return await mongoDB.collection<IUserDbModel>('users').findOne({ id });
+  },
+  async getUserByConfirmationCode(code: string) {
+    return await mongoDB
+      .collection<IUserDbModel>('users')
+      .findOne({ 'emailConfirmation.confirmationCode': code });
+  },
+  async confirmEmail(id: string) {
+    await mongoDB
+      .collection<IUserDbModel>('users')
+      .updateOne({ id }, { $set: { emailConfirmation: null } });
+  },
+  async setConfirmationCodeByEmail(
+    email: string,
+    code: string,
+    expiresIn: string
+  ) {
+    await mongoDB.collection<IUserDbModel>('users').updateOne(
+      { email },
+      {
+        $set: {
+          emailConfirmation: {
+            confirmationCode: code,
+            expirationDate: expiresIn,
+          },
+        },
+      }
+    );
   },
 };

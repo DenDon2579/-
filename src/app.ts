@@ -10,6 +10,9 @@ import userInfoController from './controllers/auth/userInfoController';
 import authMiddleware from './middlewares/authMiddleware';
 import { commentsRouter } from './routers/comments';
 import bearerAuthMiddleware from './middlewares/bearerAuthMiddleware';
+import nodemailer from 'nodemailer';
+import EmailService from './services/EmailService';
+import { authRouter } from './routers/auth';
 
 export const app = Express();
 
@@ -21,5 +24,13 @@ app.use('/users', usersRouter);
 app.use('/testing', testingRouter);
 app.use('/comments', commentsRouter);
 
-app.post('/auth/login', authController);
-app.get('/auth/me', bearerAuthMiddleware, userInfoController);
+app.use('/auth', authRouter);
+
+// app.get('/', async (req, res) => {
+//   await EmailService.sendEmail(
+//     'vladikmegarogalik@gmail.com',
+//     'NEGRI',
+//     "<a href='tiktok.com'>VSE SUDA</a>"
+//   );
+//   res.sendStatus(200);
+// });

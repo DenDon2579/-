@@ -39,3 +39,5 @@ export const userAuthValidator = [
   passwordValidator,
   returnErrors,
 ];
+
+export const userEmailValidator = [emailValidator, returnErrors];

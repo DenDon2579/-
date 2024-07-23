@@ -11,6 +11,10 @@ export interface IUserDbModel {
   salt: string;
   hash: string;
   createdAt: string;
+  emailConfirmation: {
+    confirmationCode: string;
+    expirationDate: string;
+  } | null;
 }
 
 export interface IUserRepoModel {
@@ -18,6 +22,10 @@ export interface IUserRepoModel {
   email: string;
   salt: string;
   hash: string;
+  emailConfirmation: {
+    confirmationCode: string;
+    expirationDate: string;
+  } | null;
 }
 
 export interface IUserViewModel {
