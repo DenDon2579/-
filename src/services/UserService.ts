@@ -95,10 +95,13 @@ export default {
 
   async confirmRegistration(code: string) {
     const userData = await UserRepository.getUserByConfirmationCode(code);
+    console.log(userData);
     if (userData) {
       if (
         userData.emailConfirmation?.confirmationCode === code &&
-        new Date('2024-07-23T20:45:04.006Z').getTime() - Date.now() >= 0
+        new Date(userData.emailConfirmation.expirationDate).getTime() -
+          Date.now() >=
+          0
       ) {
         await UserRepository.confirmEmail(userData.id);
         return true;
