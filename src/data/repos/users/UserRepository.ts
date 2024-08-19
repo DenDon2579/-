@@ -1,8 +1,4 @@
-import {
-  IUserDbModel,
-  IUserRepoModel,
-  IUserViewModel,
-} from '../../../types/users';
+import { IUserDbModel, IUserRepoModel } from '../../../types/users';
 import { mongoDB } from '../../db/db';
 
 export default {
@@ -34,6 +30,13 @@ export default {
   async findById(id: string) {
     return await mongoDB.collection<IUserDbModel>('users').findOne({ id });
   },
+
+  async setRefreshToken(userId: string, refreshToken: string | null) {
+    return await mongoDB
+      .collection<IUserDbModel>('users')
+      .updateOne({ id: userId }, { $set: { refreshToken } });
+  },
+
   async getUserByConfirmationCode(code: string) {
     return await mongoDB
       .collection<IUserDbModel>('users')

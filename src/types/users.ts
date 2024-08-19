@@ -11,6 +11,7 @@ export interface IUserDbModel {
   salt: string;
   hash: string;
   createdAt: string;
+  refreshToken?: string | null;
   emailConfirmation: {
     confirmationCode: string;
     expirationDate: string;
@@ -33,4 +34,10 @@ export interface IUserViewModel {
   login: string;
   email: string;
   createdAt: string;
+}
+
+export interface IUserShortViewModel {
+  userId: string;
+  login: string;
+  email: string;
 }

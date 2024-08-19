@@ -50,6 +50,23 @@ export default {
 
     return { page, pageSize, pagesCount, totalCount, items: users };
   },
+
+  async getShortInfoById(id: string) {
+    const user = await mongoDB
+      .collection<IUserDbModel>('users')
+      .findOne({ id });
+
+    if (user) {
+      return {
+        userId: user.id,
+        login: user.login,
+        email: user.email,
+      };
+    }
+
+    return null;
+  },
+
   async findById(id: string): Promise<IUserViewModel | null> {
     const user = await mongoDB
       .collection<IUserDbModel>('users')

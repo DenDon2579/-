@@ -13,10 +13,12 @@ import bearerAuthMiddleware from './middlewares/bearerAuthMiddleware';
 import nodemailer from 'nodemailer';
 import EmailService from './services/EmailService';
 import { authRouter } from './routers/auth';
+import cookieParser from 'cookie-parser';
 
 export const app = Express();
 
 app.use(bodyParser.json()).use(cors());
+app.use(cookieParser());
 
 app.use('/blogs', blogsRouter);
 app.use('/posts', postsRouter);

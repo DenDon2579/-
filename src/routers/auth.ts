@@ -6,6 +6,9 @@ import bearerAuthMiddleware from '../middlewares/bearerAuthMiddleware';
 import userInfoController from '../controllers/auth/userInfoController';
 import confirmEmailController from '../controllers/auth/confirmEmailController';
 import resendConfirmationEmailController from '../controllers/auth/resendConfirmationEmailController';
+import refreshTokenAuthMiddleware from '../middlewares/refreshTokenAuthMiddleware';
+import refreshTokenController from '../controllers/auth/refreshTokenController';
+import logoutController from '../controllers/auth/logoutController';
 
 export const authRouter = Router();
 
@@ -18,3 +21,10 @@ authRouter.post(
 );
 authRouter.post('/login', authController);
 authRouter.get('/me', bearerAuthMiddleware, userInfoController);
+
+authRouter.post('/logout', refreshTokenAuthMiddleware, logoutController);
+authRouter.post(
+  '/refresh-token',
+  refreshTokenAuthMiddleware,
+  refreshTokenController
+);

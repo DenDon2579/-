@@ -8,11 +8,9 @@ import UserQueryRepository from '../../data/repos/users/UserQueryRepository';
 export default async (req: Request, res: Response) => {
   console.log(req.userId);
   if (req.userId) {
-    const result = await UserQueryRepository.findById(req.userId);
+    const result = await UserQueryRepository.getShortInfoById(req.userId);
     if (result) {
-      res
-        .status(200)
-        .json({ login: result.login, email: result.email, userId: result.id });
+      res.status(200).json(result);
       return;
     }
     res.sendStatus(404);

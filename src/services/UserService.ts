@@ -1,9 +1,12 @@
+import jwt from 'jsonwebtoken';
 import { IUserInputModel } from '../types/users';
 import { genSalt, hash } from 'bcrypt';
 import UserRepository from '../data/repos/users/UserRepository';
 import dateFns, { Duration } from 'date-fns';
 import EmailService from './EmailService';
 import crypto from 'crypto';
+import UserQueryRepository from '../data/repos/users/UserQueryRepository';
+import { SETTINGS } from '../settings';
 
 export default {
   async create(userData: IUserInputModel) {
@@ -27,6 +30,29 @@ export default {
       }),
       null,
     ];
+  },
+
+  async validateRefreshToken(refreshToken: string): Promise<string | null> {
+    try {
+      const payload = jwt.verify(
+        refreshToken,
+        SETTINGS.SECRET
+      ) as jwt.JwtPayload;
+
+      const userData = await UserRepository.findById(payload.userId);
+
+      if (userData?.refreshToken === refreshToken) {
+        return payload.userId;
+      }
+
+      return null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async setRefreshToken(userId: string, refreshTokenValue: string | null) {
+    await UserRepository.setRefreshToken(userId, refreshTokenValue);
   },
 
   async register(userData: IUserInputModel) {

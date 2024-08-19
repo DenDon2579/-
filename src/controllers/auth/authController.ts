@@ -10,8 +10,17 @@ export default async (req: Request, res: Response) => {
   );
 
   if (userId) {
-    const token = jwt.sign({ userId }, SETTINGS.SECRET, { expiresIn: '10h' });
-    res.status(HTTP_CODES.OK).json({ accessToken: token });
+    const accessToken = jwt.sign({ userId }, SETTINGS.SECRET, {
+      expiresIn: '10s',
+    });
+
+    const refreshToken = jwt.sign({ userId }, SETTINGS.SECRET, {
+      expiresIn: '20s',
+    });
+    res
+      .status(HTTP_CODES.OK)
+      .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
+      .json({ accessToken });
   } else {
     res.sendStatus(HTTP_CODES.UNAUTHORIZED);
   }
